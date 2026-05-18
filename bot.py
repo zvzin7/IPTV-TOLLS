@@ -384,11 +384,10 @@ def run_iptv_check():
         log("[!] Host não informado.", Colors.RED)
         return
     host = normalize_host(raw_host)
-    log(f"[+] Host normalizado: {host}", Colors.CYAN)
     use_proxy = input("Usar proxy? (1-Sim / 2-Não): ").strip()
     proxies = [None]
     if use_proxy == "1":
-        if input("Buscar proxies novos? (1-Sim / 2-Não): ") == "1":
+        if input("Buscar proxies novos? (1-Sim(off)/ 2-Não(baixe do repositório antes)): ") == "1":
             ptype = input("Tipo:\n1 - HTTP/HTTPS\n2 - SOCKS4/5\n: ")
             if ptype not in ("1","2"):
                 return
@@ -712,22 +711,35 @@ def download_proxys_from_repo():
     print_with_color("╔══════════════════════════════════════╗", "cyan")
     print_with_color("║        DOWNLOAD DE PROXYS           ║", "cyan")
     print_with_color("╚══════════════════════════════════════╝", "cyan")
+    
     filename = "proxys.txt"
     local_path = PROXY_FILE
-    print_with_color(f"\n[⬇️] Baixando {filename}...", "cyan")
+    
+    # Apaga o arquivo antigo se existir
+    if local_path.exists():
+        try:
+            local_path.unlink()
+            print_with_color("[🗑️] Arquivo antigo removido...", "yellow")
+        except:
+            pass
+    
+    print_with_color(f"\n[⬇️] Baixando {filename} do repositório...", "cyan")
     success, msg = download_file(f"proxys/{filename}", local_path)
+    
     if success:
         print_with_color(f"[✓] {msg}", "green")
         print_with_color(f"[📁] Salvo em: {local_path}", "yellow")
         try:
             with open(local_path, 'r') as f:
                 lines = [l for l in f if l.strip()]
-                print_with_color(f"[📊] Total de proxies: {len(lines)}", "green")
+                print_with_color(f"[📊] Total de proxies baixados: {len(lines)}", "green")
         except:
             pass
     else:
-        print_with_color(f"[✗] Falha: {msg}", "red")
+        print_with_color(f"[✗] Falha no download: {msg}", "red")
         print_with_color("[💡] Verifique se o arquivo 'proxys/proxys.txt' existe no repositório", "yellow")
+        print_with_color(f"[💡] URL esperada: {GITHUB_RAW_URL}/proxys/proxys.txt", "yellow")
+    
     input("\nPressione Enter para voltar...")
 
 def check_for_updates():
