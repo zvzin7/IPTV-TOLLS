@@ -56,7 +56,7 @@ for d in [COMBO_DIR, HITS_DIR, PROXY_DIR, HOTMAIL_DIR, HOTMAIL_COMBO_DIR, HOTMAI
 
 PROXY_FILE = PROXY_DIR / "proxys.txt"
 
-GITHUB_RAW_URL = "https://github.com/zvzin7/IPTV-TOLLS"
+GITHUB_RAW_URL = "https://raw.githubusercontent.com/zvzin7/IPTV-TOLLS/main"
 
 VERSION = "1.0"
 
